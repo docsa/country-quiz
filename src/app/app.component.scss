@@ -1,0 +1,60 @@
+/* Country quiz app */
+@import "../common.scss";
+
+#wrapper {
+  width: 1440px;
+  height: 1090px;
+  background: $primary-color;
+  border-radius: 12px;
+  clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+}
+/* Rectangle 109 */
+
+#top-right-rect {
+  position: absolute;
+  width: 914px;
+  height: 1130px;
+  left: 1090px;
+  top: -178px;
+
+  background: rgba(96, 102, 208, 0.7);
+  border-radius: 33px;
+  transform: rotate(-65.14deg);
+}
+
+/* Rectangle 108 */
+
+#left-bottom-rect {
+position: absolute;
+width: 914px;
+height: 1130px;
+left: -76px;
+top: 461px;
+
+background: rgba(96, 102, 208, 0.7);
+border-radius: 33px;
+transform: rotate(-65.14deg);
+}
+
+/* Country quiz */
+
+
+#app-label {
+  position: absolute;
+  width: 271px;
+  height: 54px;
+  left: 488px;
+  top: 189px;
+
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 54px;
+  /* identical to box height */
+
+  text-transform: uppercase;
+
+  color: #F2F2F2;
+}
+

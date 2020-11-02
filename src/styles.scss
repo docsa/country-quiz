@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+body {
+  background-color: #333333;
+}
+
+.adventure {
+  position: absolute;
+  width: 162px;
+  height: 116px;
+  left: 790px;
+  top: 178px;
+  background-image: url("./assets/undraw_adventure_4hum 1.svg");
+  z-index: 1;
+}
