@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "country-quiz"
+    }
+  },
+  "defaultProject": "country-quiz",
+  "cli": {
+    "analytics": false
+  }
 }

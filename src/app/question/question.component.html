@@ -1,0 +1,13 @@
+<div class="adventure"></div>
+<div class="question">
+  <div class="question__title">Kuala Lumpur is the capital of</div>
+  <div class="question__buttons">
+    <app-button
+      *ngFor="let currentCountry of countries; let index = index; "
+      [index]="index"
+      [afterClick] = "afterClick"
+      (newItemEvent)="answer($event)">{{currentCountry}}
+  </app-button>
+  </div>
+  <a class="next" *ngIf="answered">Next</a>
+</div>

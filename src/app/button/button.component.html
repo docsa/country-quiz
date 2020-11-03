@@ -1,0 +1,12 @@
+<a class="answer" (click)="validate()" [ngClass]="{
+  'answer--true': isTrue,
+  'answer--false': isFalse,
+  'noHover': afterAnswer
+ }">
+  <span class="letter">
+    {{letter}}
+  </span>
+  <span class="country"><ng-content></ng-content></span>
+  <fa-icon [icon]="faCheckCircle" *ngIf="isTrue"></fa-icon>
+  <fa-icon [icon]="faTimesCircle" *ngIf="isFalse"></fa-icon>
+</a>

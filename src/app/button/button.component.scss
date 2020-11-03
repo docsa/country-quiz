@@ -1,0 +1,53 @@
+@import "../../common.scss";
+
+.answer {
+  display: block;
+  margin: 16px;
+  width:400px;
+  background:$background-color;
+  border: 2px solid $primary-color;
+  box-sizing: border-box;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  padding: 10px 19px;
+  color: $primary-color;
+}
+
+.answer:hover {
+  background: $secondary-color;
+  color: $background-color;
+  border: 2px solid $background-color;
+}
+
+.answer--true  {
+  background: $true-color;
+  color: $background-color;
+  border: 2px solid $true-color;
+}
+
+.answer--false  {
+  background: $false-color;
+  color: $background-color;
+  border: 2px solid $false-color;
+}
+
+.letter {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 700;
+  width: 56px;
+}
+
+.country {
+  display: inline-block;
+  width: 280px;
+}
+
+.noHover{
+  pointer-events: none;
+}
