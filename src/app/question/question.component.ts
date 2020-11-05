@@ -1,6 +1,7 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Input , ApplicationRef} from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { Country } from '../country.interface';
 
 @Component({
   selector: 'app-question',
@@ -9,20 +10,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionComponent implements OnInit {
 
+  private eventsSubscription: Subscription;
   private afterClick: EventEmitter<number> = new EventEmitter();
-  answered:boolean = false;
 
-  countries =['Vietnam', 'Malaysia', 'Sweden', 'Austria'];
+  answerOK:boolean = false;
+  countries:Country[] = [];
+  capital: string;
+  correctAnswer: number;
 
-  constructor() { }
+  constructor(private applicationRef: ApplicationRef) { }
+
+  clearButtons:Subject<void> = new Subject<void>();
+
+  @Input() question: Observable<Country[]>;
 
   ngOnInit(): void {
-
+    this.eventsSubscription = this.question.subscribe((data) => {
+      this.countries=data
+      this.correctAnswer = Math.floor(Math.random() * 4)
+      this.capital=this.countries[this.correctAnswer].capital
+    });
   }
 
-  answer(answer_num: number): void {
-    this.answered = true;
-    this.afterClick.emit(1);
+  answer(answerNum: number): void {
+    console.log("QuestionComponent -> answer -> answer_num", answerNum)
+    this.afterClick.emit(this.correctAnswer);
+    if(answerNum === this.correctAnswer) {
+      this.answerOK = true;
+    } else {
+      setTimeout(() => {
+        this.clearButtons.next();
+      }, 1500)
+    }
   }
 
 }

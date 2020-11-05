@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Component({
@@ -25,17 +26,33 @@ export class ButtonComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter<number>();
 
+  private eventsSubscription: Subscription;
+  @Input() clearButtons: Observable<void>;
+
   constructor() { }
 
   ngOnInit(): void {
     this.letter = String.fromCharCode(65+this.index);
+    if(this.clearButtons) {
+      this.eventsSubscription = this.clearButtons.subscribe(()=> {
+      console.log("ButtonComponent -> ngOnInit -> eventsSubscription")
+        this.wasClicked = false;
+        this. afterAnswer = false;
+        this.isTrue = false;
+        this. isFalse = false;
+      });
+    }
     if (this.afterClick) {
       this.afterClick.subscribe(data => {
         this.afterAnswer=true;
-        if(data===this.index ) {
-          this.isTrue=true;
-        } else if(this.wasClicked)
-          this.isFalse=true;
+        if(this.wasClicked) {
+          if(data===this.index ) {
+            this.isTrue=true;
+          } else {
+            this.isFalse = true;
+          }
+        }
+
       });
     }
   }
