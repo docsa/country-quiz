@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { EventBusService } from '../shared/event-bus.service';
+import { EventData } from '../shared/event.class';
 
 
 @Component({
@@ -22,44 +24,35 @@ export class ButtonComponent implements OnInit {
 
   @Input() index: number;
 
-  @Input()  private afterClick: EventEmitter<number>;
-
-  @Output() newItemEvent = new EventEmitter<number>();
-
   private eventsSubscription: Subscription;
-  @Input() clearButtons: Observable<void>;
 
-  constructor() { }
+  constructor(private eventBusService: EventBusService) { }
 
   ngOnInit(): void {
     this.letter = String.fromCharCode(65+this.index);
-    if(this.clearButtons) {
-      this.eventsSubscription = this.clearButtons.subscribe(()=> {
-      console.log("ButtonComponent -> ngOnInit -> eventsSubscription")
-        this.wasClicked = false;
-        this. afterAnswer = false;
-        this.isTrue = false;
-        this. isFalse = false;
-      });
-    }
-    if (this.afterClick) {
-      this.afterClick.subscribe(data => {
-        this.afterAnswer=true;
-        if(this.wasClicked) {
-          if(data===this.index ) {
-            this.isTrue=true;
-          } else {
-            this.isFalse = true;
-          }
+    this.eventBusService.on('tryAgain', (dummy: boolean) => {
+    console.log("ButtonComponent -> ngOnInit -> tryAgain")
+      this.wasClicked = false;
+      this. afterAnswer = false;
+      this.isTrue = false;
+      this. isFalse = false;
+    });
+    this.eventBusService.on('correct', (correctId: number) => {
+      this.afterAnswer=true;
+      if(this.wasClicked) {
+        if(correctId===this.index ) {
+          this.isTrue=true;
+        } else {
+          this.isFalse = true;
         }
+      }
 
-      });
-    }
+    });
   }
 
   validate(): void {
     this.wasClicked=true;
-    this.newItemEvent.emit(this.index)
+    this.eventBusService.emit(new EventData('answer', this.index))
   }
 
 }

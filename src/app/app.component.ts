@@ -1,8 +1,9 @@
-import { EventEmitter } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Country } from './country.interface';
 import { QuestionsService} from './questions.service'
+import { EventBusService } from './shared/event-bus.service';
+import { EventData } from './shared/event.class';
 
 @Component({
   selector: 'app-root',
@@ -14,14 +15,15 @@ export class AppComponent implements OnInit {
   AllCountries:Country[];
   askQuestion:Subject<Country[]> = new Subject<Country[]>();
 
-  constructor(private questionsService: QuestionsService) {}
+  constructor(private questionsService: QuestionsService,
+              private eventBusService: EventBusService) {}
 
   ngOnInit() {
     this.questionsService.getCountries().then((data: Country[]) => {
       console.log("AppComponent -> ngOnInit -> AllCountries", data)
       this.AllCountries = data;
       let countries = this.drawQuestion();
-      this.askQuestion.next(countries);
+      this.eventBusService.emit(new EventData('question', countries));
     });
   }
 

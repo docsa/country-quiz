@@ -1,13 +1,11 @@
+<-- Draw picture -->
 <div class="adventure"></div>
 <div class="question">
   <div class="question__title">{{capital}} is the capital of</div>
   <div class="question__buttons">
     <app-button
       *ngFor="let currentCountry of countries; let index = index; "
-      [index]="index"
-      [afterClick] = "afterClick"
-      [clearButtons] = "clearButtons.asObservable()"
-      (newItemEvent)="answer($event)">{{currentCountry.name}}
+      [index]="index" >{{currentCountry.name}}
   </app-button>
   </div>
   <a class="next" *ngIf="answerOK">Next</a>

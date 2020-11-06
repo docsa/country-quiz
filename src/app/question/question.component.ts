@@ -1,47 +1,43 @@
-import { EventEmitter, Input , ApplicationRef} from '@angular/core';
+import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { EventBusService } from 'src/app/shared/event-bus.service';
 import { Country } from '../country.interface';
+import { EventData } from '../shared/event.class';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent implements OnInit {
 
-  private eventsSubscription: Subscription;
-  private afterClick: EventEmitter<number> = new EventEmitter();
-
-  answerOK:boolean = false;
-  countries:Country[] = [];
+  answerOK: boolean = false;
+  countries: Country[] = [];
   capital: string;
   correctAnswer: number;
 
-  constructor(private applicationRef: ApplicationRef) { }
-
-  clearButtons:Subject<void> = new Subject<void>();
+  constructor( private eventBusService: EventBusService )
+   {}
 
   @Input() question: Observable<Country[]>;
 
   ngOnInit(): void {
-    this.eventsSubscription = this.question.subscribe((data) => {
-      this.countries=data
-      this.correctAnswer = Math.floor(Math.random() * 4)
-      this.capital=this.countries[this.correctAnswer].capital
+    this.eventBusService.on('question',(data) => {
+      this.countries = data;
+      this.correctAnswer = Math.floor(Math.random() * 4);
+      this.capital = this.countries[this.correctAnswer].capital;
+    });
+    this.eventBusService.on('answer', (answerId: number) => {
+      console.log('QuestionComponent -> eventBus -> answer', answerId);
+      this.eventBusService.emit(new EventData('correct', this.correctAnswer))
+      if (answerId === this.correctAnswer) {
+        this.answerOK = true;
+      } else {
+        setTimeout(() => {
+          this.eventBusService.emit(new EventData('tryAgain',true))
+        }, 1500);
+      }
     });
   }
-
-  answer(answerNum: number): void {
-    console.log("QuestionComponent -> answer -> answer_num", answerNum)
-    this.afterClick.emit(this.correctAnswer);
-    if(answerNum === this.correctAnswer) {
-      this.answerOK = true;
-    } else {
-      setTimeout(() => {
-        this.clearButtons.next();
-      }, 1500)
-    }
-  }
-
 }
