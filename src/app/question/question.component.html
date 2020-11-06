@@ -8,5 +8,5 @@
       [index]="index" >{{currentCountry.name}}
   </app-button>
   </div>
-  <a class="next" *ngIf="answerOK">Next</a>
+  <a class="next" *ngIf="answerOK" (click)="next()" >Next</a>
 </div>

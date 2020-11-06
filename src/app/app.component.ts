@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Country } from './country.interface';
-import { QuestionsService} from './questions.service'
+import { CountryService} from './country.service'
 import { EventBusService } from './shared/event-bus.service';
 import { EventData } from './shared/event.class';
 
@@ -13,34 +13,43 @@ import { EventData } from './shared/event.class';
 export class AppComponent implements OnInit {
   title = 'country-quiz';
   AllCountries:Country[];
-  askQuestion:Subject<Country[]> = new Subject<Country[]>();
+  counter: number = 0;
+  goodAnswers: number = 0;
 
-  constructor(private questionsService: QuestionsService,
+  constructor(private countryService: CountryService,
               private eventBusService: EventBusService) {}
 
   ngOnInit() {
-    this.questionsService.getCountries().then((data: Country[]) => {
-      console.log("AppComponent -> ngOnInit -> AllCountries", data)
+    this.countryService.getCountries().then((data: Country[]) => {
       this.AllCountries = data;
-      let countries = this.drawQuestion();
-      this.eventBusService.emit(new EventData('question', countries));
+      this.drawQuestion();
     });
+
+    this.eventBusService.on('next', () => {
+      this.drawQuestion();
+    })
+
+    this.eventBusService.on('correct', () => {
+      this.goodAnswers = this.goodAnswers+1;
+      console.log("AppComponent -> ngOnInit -> this.goodAnswers", this.goodAnswers)
+    })
   }
 
-  drawQuestion() : Country[] {
-    let capitals:Country[] =[];
-    while(capitals.length<4) {
+  drawQuestion() : void {
+    let questions:Country[] =[];
+    while(questions.length<4) {
       let rand=Math.floor(Math.random() * this.AllCountries.length)
-      if( !capitals.find(a => a.name === this.AllCountries[rand].name )) {
-        capitals.push({
+      if( this.AllCountries[rand].name !=='' && !questions.find(a => a.name === this.AllCountries[rand].name )) {
+        questions.push({
           'name': this.AllCountries[rand].name,
           'capital': this.AllCountries[rand].capital,
           'flag': this.AllCountries[rand].flag,
         })
       }
     }
-    console.log("AppComponent -> drawQuestion -> capitals", capitals)
-    return capitals;
+    console.log("AppComponent -> drawQuestion -> questions", questions)
+    this.eventBusService.emit(new EventData('question', questions));
+    return ;
   }
 
 

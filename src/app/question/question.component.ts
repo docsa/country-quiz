@@ -30,14 +30,20 @@ export class QuestionComponent implements OnInit {
     });
     this.eventBusService.on('answer', (answerId: number) => {
       console.log('QuestionComponent -> eventBus -> answer', answerId);
-      this.eventBusService.emit(new EventData('correct', this.correctAnswer))
+      this.eventBusService.emit(new EventData('check', this.correctAnswer))
       if (answerId === this.correctAnswer) {
         this.answerOK = true;
+        this.eventBusService.emit(new EventData('correct', null))
       } else {
         setTimeout(() => {
-          this.eventBusService.emit(new EventData('tryAgain',true))
+          this.eventBusService.emit(new EventData('tryAgain',null));
         }, 1500);
       }
     });
+  }
+
+  next() {
+    this.answerOK = false;
+    this.eventBusService.emit(new EventData('next',null));
   }
 }

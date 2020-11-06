@@ -7,7 +7,7 @@ const COUNTRY_URL = 'https://restcountries.eu/rest/v2/all'
 @Injectable({
   providedIn: 'root'
 })
-export class QuestionsService {
+export class CountryService {
   private countries:Country[] = [];
 
   constructor(private http: HttpClient) { }
