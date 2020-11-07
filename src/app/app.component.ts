@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   title = 'country-quiz';
   AllCountries:Country[];
   counter: number = 0;
-  goodAnswers: number = 0;
 
   constructor(private countryService: CountryService,
               private eventBusService: EventBusService) {}
@@ -27,11 +26,6 @@ export class AppComponent implements OnInit {
 
     this.eventBusService.on('next', () => {
       this.drawQuestion();
-    })
-
-    this.eventBusService.on('correct', () => {
-      this.goodAnswers = this.goodAnswers+1;
-      console.log("AppComponent -> ngOnInit -> this.goodAnswers", this.goodAnswers)
     })
   }
 

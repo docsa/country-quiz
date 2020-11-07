@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { EventBusService } from '../shared/event-bus.service';
 import { EventData } from '../shared/event.class';
+
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 enum State  {
   WAITING = 'waiting',

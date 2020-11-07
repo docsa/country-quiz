@@ -13,9 +13,11 @@ import { EventData } from '../shared/event.class';
 export class QuestionComponent implements OnInit {
 
   answerOK: boolean = false;
+  gameOver=false;
   countries: Country[] = [];
   capital: string;
   correctAnswer: number;
+  goodAnswers: number = 0;
 
   constructor( private eventBusService: EventBusService )
    {}
@@ -33,10 +35,11 @@ export class QuestionComponent implements OnInit {
       this.eventBusService.emit(new EventData('check', this.correctAnswer))
       if (answerId === this.correctAnswer) {
         this.answerOK = true;
-        this.eventBusService.emit(new EventData('correct', null))
+        this.goodAnswers = this.goodAnswers+1;
+        console.log("AppComponent -> ngOnInit -> this.goodAnswers", this.goodAnswers)
       } else {
         setTimeout(() => {
-          this.eventBusService.emit(new EventData('tryAgain',null));
+          this.gameOver = true;
         }, 1500);
       }
     });

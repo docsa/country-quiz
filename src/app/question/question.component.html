@@ -1,12 +1,23 @@
-<-- Draw picture -->
-<div class="adventure"></div>
-<div class="question">
-  <div class="question__title">{{capital}} is the capital of</div>
-  <div class="question__buttons">
-    <app-button
-      *ngFor="let currentCountry of countries; let index = index; "
-      [index]="index" >{{currentCountry.name}}
-  </app-button>
+<div class="question__background">
+  <div class="question" *ngIf="!gameOver">
+    <!-- Draw picture  -->
+    <div class="question__picture"></div>
+    <div class="question__title">{{ capital }} is the capital of</div>
+    <div class="question__buttons">
+      <app-button
+        *ngFor="let currentCountry of countries; let index = index"
+        [index]="index"
+        >{{ currentCountry.name }}
+      </app-button>
+    </div>
+    <a class="next" *ngIf="answerOK" (click)="next()">Next</a>
   </div>
-  <a class="next" *ngIf="answerOK" (click)="next()" >Next</a>
+  <div class="game-over" *ngIf="gameOver">
+    <div class="game-over__picture"></div>
+    <div class="game-over__result">Results</div>
+    <div class="game-over__score">
+      You got
+      <span class="game-over__score--green"> {{ goodAnswers }} </span>correct answers
+    </div>
+  </div>
 </div>
