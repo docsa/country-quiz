@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 import { Country } from './country.interface';
-import { CountryService} from './country.service'
+import { CountryService} from './country.service';
 import { EventBusService } from './shared/event-bus.service';
 import { EventData } from './shared/event.class';
 
@@ -12,13 +11,13 @@ import { EventData } from './shared/event.class';
 })
 export class AppComponent implements OnInit {
   title = 'country-quiz';
-  AllCountries:Country[];
-  counter: number = 0;
+  AllCountries: Country[];
+  counter = 0;
 
   constructor(private countryService: CountryService,
               private eventBusService: EventBusService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.countryService.getCountries().then((data: Country[]) => {
       this.AllCountries = data;
       this.drawQuestion();
@@ -26,22 +25,22 @@ export class AppComponent implements OnInit {
 
     this.eventBusService.on('next', () => {
       this.drawQuestion();
-    })
+    });
   }
 
-  drawQuestion() : void {
-    let questions:Country[] =[];
-    while(questions.length<4) {
-      let rand=Math.floor(Math.random() * this.AllCountries.length)
-      if( this.AllCountries[rand].name !=='' && !questions.find(a => a.name === this.AllCountries[rand].name )) {
+  drawQuestion(): void {
+    const questions: Country[] = [];
+    while (questions.length < 4) {
+      const rand = Math.floor(Math.random() * this.AllCountries.length);
+      if ( this.AllCountries[rand].name !== '' && !questions.find(a => a.name === this.AllCountries[rand].name )) {
         questions.push({
-          'name': this.AllCountries[rand].name,
-          'capital': this.AllCountries[rand].capital,
-          'flag': this.AllCountries[rand].flag,
-        })
+          name: this.AllCountries[rand].name,
+          capital: this.AllCountries[rand].capital,
+          flag: this.AllCountries[rand].flag,
+        });
       }
     }
-    console.log("AppComponent -> drawQuestion -> questions", questions)
+    console.log('AppComponent -> drawQuestion -> questions', questions);
     this.eventBusService.emit(new EventData('question', questions));
     return ;
   }

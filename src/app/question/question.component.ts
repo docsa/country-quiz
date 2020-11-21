@@ -12,12 +12,12 @@ import { EventData } from '../shared/event.class';
 })
 export class QuestionComponent implements OnInit {
 
-  answerOK: boolean = false;
-  gameOver=false;
+  answerOK = false;
+  gameOver = false;
   countries: Country[] = [];
   capital: string;
   correctAnswer: number;
-  goodAnswers: number = 0;
+  goodAnswers = 0;
 
   constructor( private eventBusService: EventBusService )
    {}
@@ -25,18 +25,18 @@ export class QuestionComponent implements OnInit {
   @Input() question: Observable<Country[]>;
 
   ngOnInit(): void {
-    this.eventBusService.on('question',(data) => {
+    this.eventBusService.on('question', (data) => {
       this.countries = data;
       this.correctAnswer = Math.floor(Math.random() * 4);
       this.capital = this.countries[this.correctAnswer].capital;
     });
     this.eventBusService.on('answer', (answerId: number) => {
       console.log('QuestionComponent -> eventBus -> answer', answerId);
-      this.eventBusService.emit(new EventData('check', this.correctAnswer))
+      this.eventBusService.emit(new EventData('check', this.correctAnswer));
       if (answerId === this.correctAnswer) {
         this.answerOK = true;
-        this.goodAnswers = this.goodAnswers+1;
-        console.log("AppComponent -> ngOnInit -> this.goodAnswers", this.goodAnswers)
+        this.goodAnswers = this.goodAnswers + 1;
+        console.log('AppComponent -> ngOnInit -> this.goodAnswers', this.goodAnswers);
       } else {
         setTimeout(() => {
           this.gameOver = true;
@@ -45,8 +45,8 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  next() {
+  next(): void {
     this.answerOK = false;
-    this.eventBusService.emit(new EventData('next',null));
+    this.eventBusService.emit(new EventData('next', null));
   }
 }

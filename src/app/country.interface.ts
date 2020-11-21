@@ -1,5 +1,5 @@
 export interface Country {
-  name: string,
-  flag: string,
-  capital:string
+  name: string;
+  flag: string;
+  capital: string;
 }
