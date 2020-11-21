@@ -26,6 +26,11 @@ export class AppComponent implements OnInit {
     this.eventBusService.on('next', () => {
       this.drawQuestion();
     });
+
+    this.eventBusService.on('restart', () => {
+      this.counter = 0;
+      this.drawQuestion();
+    });
   }
 
   drawQuestion(): void {

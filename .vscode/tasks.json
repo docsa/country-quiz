@@ -5,11 +5,20 @@
 			"type": "npm",
 			"script": "start",
 			"problemMatcher": [
-				"$tsc-watch"
+        "$tslint5"
 			],
 			"label": "npm: start",
 			"detail": "ng serve",
 			"isBackground": true
+		},
+		{
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": [
+				"$eslint-compact"
+			],
+			"label": "npm: lint",
+			"detail": "ng lint"
 		}
 	]
 }

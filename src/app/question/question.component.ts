@@ -49,4 +49,9 @@ export class QuestionComponent implements OnInit {
     this.answerOK = false;
     this.eventBusService.emit(new EventData('next', null));
   }
+
+  restart(): void {
+    this.gameOver = false;
+    this.eventBusService.emit(new EventData('restart', null));
+  }
 }
